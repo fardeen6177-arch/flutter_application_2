@@ -1,52 +1,54 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// Main App Widget
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // This changes the browser tab title
-      title: 'Sandwich Shop App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
+      title: 'Sandwich Shop App', // Browser tab title
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Sandwich Counter')),
+        body: Center(
+          child: Container(
+            width: 300,
+            height: 150,
+            color: Colors.blue[100],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const [
+                OrderItemDisplay(5, 'Footlong'),
+                OrderItemDisplay(3, 'Mini'),
+                OrderItemDisplay(7, 'Club'),
+              ],
+            ),
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'My Sandwich Shop'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// Custom StatelessWidget to display sandwich orders
+class OrderItemDisplay extends StatelessWidget {
+  final String itemType;
+  final int quantity;
 
-  final String title;
+  const OrderItemDisplay(this.quantity, this.itemType, {super.key});
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title), // AppBar title
-      ),
-      body: const Center(
-        child: Text(
-          'Welcome to my shop!',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.orange,
-          ),
-        ),
+    return Text(
+      '$quantity $itemType sandwich(es): ${'🥪' * quantity}',
+      style: const TextStyle(
+        color: Colors.green,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
       ),
     );
   }
