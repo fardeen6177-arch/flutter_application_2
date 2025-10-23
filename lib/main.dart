@@ -4,52 +4,87 @@ void main() {
   runApp(const App());
 }
 
-// Main App Widget
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sandwich Shop App', // Browser tab title
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Sandwich Counter')),
-        body: Center(
-          child: Container(
-            width: 300,
-            height: 150,
-            color: Colors.blue[100],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                OrderItemDisplay(5, 'Footlong'),
-                OrderItemDisplay(3, 'Mini'),
-                OrderItemDisplay(7, 'Club'),
+    return const MaterialApp(
+      title: 'Sandwich Shop App',
+      home: OrderScreen(maxQuantity: 5),
+    );
+  }
+}
+
+// ✅ StatefulWidget for managing order state
+class OrderScreen extends StatefulWidget {
+  final int maxQuantity;
+
+  const OrderScreen({super.key, this.maxQuantity = 10});
+
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends State<OrderScreen> {
+  int _quantity = 0;
+
+  void _increaseQuantity() {
+    if (_quantity < widget.maxQuantity) {
+      setState(() => _quantity++);
+    }
+  }
+
+  void _decreaseQuantity() {
+    if (_quantity > 0) {
+      setState(() => _quantity--);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sandwich Counter'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OrderItemDisplay(_quantity, 'Footlong'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _increaseQuantity,
+                  child: const Text('Add'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: _decreaseQuantity,
+                  child: const Text('Remove'),
+                ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-// Custom StatelessWidget to display sandwich orders
+// ✅ Display widget for showing order info
 class OrderItemDisplay extends StatelessWidget {
-  final String itemType;
   final int quantity;
+  final String sandwichType;
 
-  const OrderItemDisplay(this.quantity, this.itemType, {super.key});
+  const OrderItemDisplay(this.quantity, this.sandwichType, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      '$quantity $itemType sandwich(es): ${'🥪' * quantity}',
-      style: const TextStyle(
-        color: Colors.green,
-        fontWeight: FontWeight.bold,
-        fontSize: 16,
-      ),
+      '$quantity $sandwichType sandwich(es)',
+      style: const TextStyle(fontSize: 20),
     );
   }
 }
