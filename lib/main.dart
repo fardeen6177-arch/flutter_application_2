@@ -114,7 +114,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   text: 'Remove',
                   icon: Icons.remove,
                   onPressed: _quantity > 0 ? _decreaseQuantity : null,
-                  color: Colors.red,
+                  color: Colors.orange,
                 ),
                 StyledButton(
                   text: 'Add',
